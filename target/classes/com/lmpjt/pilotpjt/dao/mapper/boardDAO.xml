@@ -31,15 +31,10 @@
 		boardNumber=#{boardNumber}
 	</select>
 
-	<!-- void 일 경우 resultType도 없음 -->
-	<update id="boardModify">
-		update tbl_board set boardName=#{boardName},
-		boardTitle=#{boardTitle}, boardContent=#{boardContent} where
-		boardNo=#{boardNo}
+	<update id="boardModify"> update board set boardTitle=#{boardTitle},
+		boardContent=#{boardContent} where boardNumber=#{boardNumber}
 	</update>
-
-	<update id="boardDelete">
-		delete from tbl_board where boardNo=#{boardNo}
+	<update id="boardDelete"> delete from board where boardNumber=#{boardNumber}
 	</update>
 	<update id="boardHit">
 		UPDATE board
@@ -52,7 +47,8 @@
 		SELECT COUNT(*) FROM
 		board_likes
 		WHERE boardNumber = #{boardNumber}
-		AND userNumber = #{userNumber}
+		AND userNumber =
+		#{userNumber}
 	</select>
 
 	<!-- 좋아요 삽입 -->

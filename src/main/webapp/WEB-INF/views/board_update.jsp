@@ -15,8 +15,21 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
 	rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-<script src="/pilotpjt/resources/js/baord_write.js"></script>
-
+<script src="/pilotpjt/resources/js/baord_update.js"></script>
+<script>
+        function changeSort(sortType) {
+            // 정렬 옵션 변경 시 처리
+            const sortOptions = document.querySelectorAll('.sort-option');
+            sortOptions.forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            // 실제 정렬 처리를 위한 AJAX 호출 또는 페이지 리로드 로직
+            location.href = '/pilotpjt/board_view?sort=' + sortType;
+        }
+    </script>
 </head>
 <body>
 	<jsp:include page="header.jsp" />
@@ -32,7 +45,7 @@
 	<div class="board-container">
 		<div class="board-form">
 			<div class="form-header">
-				<h1 class="form-title">게시글 작성</h1>
+				<h1 class="form-title">게시글 수정</h1>
 				<p class="form-description">자유롭게 의견을 나누고 소통해보세요.</p>
 			</div>
 
@@ -42,24 +55,24 @@
 					value="<%=user.getUserNumber()%>"> <input type="hidden"
 					name="userName" value="<%=user.getUserName()%>">
 				<!-- 					<input type="hidden" name="boardContent" id="boardContent"> -->
-
-				<div class="form-group">
+					<input type="hidden" name="boardNumber" value="${board.boardNumber}" />
+					<div class="form-group">
 					<label for="boardTitle" class="form-label">제목</label> <input
 						type="text" id="boardTitle" name="boardTitle" class="form-control"
-						placeholder="제목을 입력하세요" required>
+						value ="${board.boardTitle}">
 				</div>
 
 				<div class="form-group">
-					<label for="editor" class="form-label">내용</label> <input
-						type="hidden" name="boardContent" id="boardContent">
-					<div id="editor" class="editor-container" name="boardContent"></div>
+					<label for="editor" class="form-label">내용</label>
+					<input type="hidden"  name="boardContent" id="boardContent">
+					<div id="editor" class="editor-container" name="boardContent">${board.boardContent}</div>
 					<div id="contentError" class="error-message"></div>
 				</div>
 
 				<div class="form-actions">
 					<button type="button" class="btn btn-secondary"
 						onclick="location.href='board_view'">취소</button>
-					<button type="button" class="btn btn-primary" onclick="fn_submit()">등록하기</button>
+					<button type="button" class="btn btn-primary" onclick="fn_submit()">수정하기</button>
 				</div>
 			</form>
 		</div>
@@ -84,7 +97,7 @@
 
 			$.ajax({
 				type : "post",
-				url : "board_write_ok",
+				url : "board_update_ok",
 				data : formData,
 				success : function(data) {
 					alert("저장완료");
@@ -97,24 +110,20 @@
 		}
 		// Quill 에디터 초기화
 		var quill = new Quill('#editor', {
-			theme : 'snow',
-			placeholder : '내용을 입력하세요.',
-			modules : {
-				toolbar : [ [ {
-					'header' : [ 1, 2, 3, 4, 5, 6, false ]
-				} ], [ 'bold', 'italic', 'underline', 'strike' ], [ {
-					'color' : []
-				}, {
-					'background' : []
-				} ], [ {
-					'list' : 'ordered'
-				}, {
-					'list' : 'bullet'
-				} ], [ {
-					'align' : []
-				} ], [ 'link', 'image' ], [ 'clean' ] ]
-			}
+		    theme: 'snow',
+		    modules: {
+		        toolbar: [
+		            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+		            ['bold', 'italic', 'underline', 'strike'],
+		            [{ 'color': [] }, { 'background': [] }],
+		            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+		            [{ 'align': [] }],
+		            ['link', 'image'],
+		            ['clean']
+		        ]
+		    }
 		});
+
 	</script>
 
 </body>

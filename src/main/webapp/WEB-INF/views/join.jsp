@@ -134,16 +134,6 @@ function fn_submit() {
 				<span class="error-message">생년월일을 선택해주세요.</span>
 			</div>
 			
-<!-- 			<div class="form-group"> -->
-<!-- 			    <label>우편번호 <span class="required-mark">*</span></label> -->
-<!-- 			    <input type="text" name="userZipCode" id="zipCode" -->
-<!-- 			    required -->
-<!-- 			    placeholder="우편번호 입력" -->
-<!-- 			    readonly> -->
-<!-- 			    <span class="input-hint">우편번호를 입력해주세요.</span> -->
-<!-- 				<span class="error-message">우편번호를 입력해주세요.</span> -->
-<!-- 			</div> -->
-
 			<div class="form-group full-width">
 				<label>주소 <span class="required-mark">*</span></label>
 				<input type="text" name="userZipCode" id="zipCode"

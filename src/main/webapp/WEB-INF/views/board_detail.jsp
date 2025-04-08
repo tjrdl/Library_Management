@@ -12,6 +12,106 @@
     <link rel="stylesheet" type="text/css" href="/pilotpjt/resources/css/board_detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/pilotpjt/resources/js/baord_detail.js"></script>
+    <style>
+        /* 대댓글 관련 스타일 */
+        .reply-button {
+            background: none;
+            border: none;
+            color: #6384c5;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        
+        .reply-button:hover {
+            color: #1a72ff;
+            text-decoration: underline;
+        }
+        
+        .reply-form {
+            margin-top: 10px;
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 2px solid #e8f1ff;
+            display: none;
+        }
+        
+        .reply-textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            resize: vertical;
+            margin-bottom: 8px;
+        }
+        
+        .reply-submit {
+            background-color: #6384c5;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        
+        .reply-submit:hover {
+            background-color: #4a6da7;
+        }
+        
+        .reply-cancel {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+            margin-right: 8px;
+        }
+        
+        .reply-cancel:hover {
+            background-color: #e9ecef;
+        }
+        
+        .reply-item {
+            margin-left: 30px;
+            padding-left: 15px;
+            border-left: 2px solid #e8f1ff;
+            margin-top: 10px;
+        }
+        
+        .reply-indicator {
+            display: flex;
+            align-items: center;
+            color: #6384c5;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        .reply-indicator i {
+            transform: rotate(180deg);
+            margin-right: 5px;
+        }
+        
+        .nested-reply {
+            margin-left: 15px;
+        }
+        
+        .reply-to {
+            font-size: 0.8rem;
+            color: #6384c5;
+            margin-bottom: 5px;
+        }
+        
+        .reply-to strong {
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
     <jsp:include page="header.jsp" />
@@ -60,9 +160,10 @@
                     
                     if (user != null && (user.getUserNumber() == board.getUserNumber() || user.getUserAdmin() == 1)) { 
                     %>
-                    <button class="action-button edit-button" onclick="location.href='/pilotpjt/board_edit?boardNumber=${board.boardNumber}'">
-                        <i class="fas fa-edit"></i> 수정
-                    </button>
+					<button class="action-button edit-button"
+						onclick="location.href='/pilotpjt/board_update?boardNumber=${board.boardNumber}'">
+						<i class="fas fa-edit"></i> 수정
+					</button>
                     <button class="action-button delete-button" onclick="deletePost(${board.boardNumber})">
                         <i class="fas fa-trash"></i> 삭제
                     </button>
@@ -76,11 +177,15 @@
         
         <div class="comments-section">
             <h2 class="comments-header">댓글</h2>
-            
+
             <% if (user != null) { %>
             <div class="comment-form">
-                <form action="/pilotpjt/add_comment" method="post">
+                <form action="/pilotpjt/comment_write_ok" method="post">
                     <input type="hidden" name="boardNumber" value="${board.boardNumber}">
+                    <input type="hidden" name="userNumber" value="<%= user.getUserNumber()%>">
+                    <input type="hidden" name="userName" value="<%= user.getUserName()%>">
+                    <input type="hidden" name="commentSubNumber" value="0">
+                    <input type="hidden" name="commentSubStepNumber" value="0">
                     <textarea name="commentContent" class="comment-textarea" placeholder="댓글을 작성해주세요"></textarea>
                     <button type="submit" class="comment-submit">댓글 작성</button>
                     <div style="clear: both;"></div>
@@ -99,14 +204,69 @@
                     </div>
                 </c:if>
                 
+                <!-- 메인 댓글 표시 -->
                 <c:forEach items="${commentList}" var="comment">
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <div class="comment-author">${comment.userName}</div>
-                            <div class="comment-date">${comment.commentDate}</div>
+                    <c:if test="${comment.commentSubNumber == 0}">
+                        <div class="comment-item" id="comment-${comment.commentNumber}">
+                            <div class="comment-header">
+                                <div class="comment-author">${comment.userName}</div>
+                                <div class="comment-date">${comment.commentWriteDate}</div>
+                            </div>
+                            <div class="comment-content">${comment.commentContent}</div>
+                            
+                            <!-- 답글 버튼 -->
+                            <% if (user != null) { %>
+                            <button class="reply-button" onclick="showReplyForm(${comment.commentNumber}, '${comment.userName}', 0)">
+                                <i class="fas fa-reply"></i> 답글
+                            </button>
+                            
+                            <!-- 대댓글 작성 폼 -->
+                            <div class="reply-form" id="reply-form-${comment.commentNumber}">
+                                <form action="/pilotpjt/comment_write_ok" method="post">
+                                    <input type="hidden" name="boardNumber" value="${board.boardNumber}">
+                                    <input type="hidden" name="userNumber" value="<%= user.getUserNumber()%>">
+                                    <input type="hidden" name="userName" value="<%= user.getUserName()%>">
+                                    <input type="hidden" name="commentSubNumber" value="${comment.commentNumber}">
+                                    <input type="hidden" name="commentSubStepNumber" value="1">
+                                    <input type="hidden" id="replyToUser-${comment.commentNumber}" name="replyToUser" value="">
+                                    <div id="replyToMessage-${comment.commentNumber}" class="reply-to"></div>
+                                    <textarea name="commentContent" class="reply-textarea" placeholder="답글을 작성해주세요"></textarea>
+                                    <button type="button" class="reply-cancel" onclick="hideReplyForm(${comment.commentNumber})">취소</button>
+                                    <button type="submit" class="reply-submit">답글 작성</button>
+                                    <div style="clear: both;"></div>
+                                </form>
+                            </div>
+                            <% } %>
+                            
+                            <!-- 대댓글 표시 (commentSubStepNumber 순서대로 정렬) -->
+                            <c:forEach items="${commentList}" var="reply">
+                                <c:if test="${reply.commentSubNumber == comment.commentNumber}">
+                                    <div class="reply-item" id="comment-${reply.commentNumber}">
+                                        <div class="reply-indicator">
+                                            <i class="fas fa-reply"></i> 답글
+                                        </div>
+                                        <div class="comment-header">
+                                            <div class="comment-author">${reply.userName}</div>
+                                            <div class="comment-date">${reply.commentWriteDate}</div>
+                                        </div>
+<%--                                         <c:if test="${not empty reply.replyToUser && reply.commentSubStepNumber > 1}"> --%>
+<!--                                             <div class="reply-to"> -->
+<%--                                                 <strong>${reply.replyToUser}</strong>님에게 답글 --%>
+<!--                                             </div> -->
+<%--                                         </c:if> --%>
+                                        <div class="comment-content">${reply.commentContent}</div>
+                                        
+                                        <!-- 대댓글에 대한 답글 버튼 -->
+<%--                                         <% if (user != null) { %> --%>
+<%--                                         <button class="reply-button" onclick="showReplyForm(${comment.commentNumber}, '${reply.userName}', ${reply.commentSubStepNumber})"> --%>
+<!--                                             <i class="fas fa-reply"></i> 답글 -->
+<!--                                         </button> -->
+<%--                                         <% } %> --%>
+                                    </div>
+                                </c:if>
+                            </c:forEach>
                         </div>
-                        <div class="comment-content">${comment.commentContent}</div>
-                    </div>
+                    </c:if>
                 </c:forEach>
             </div>
         </div>
@@ -137,13 +297,58 @@
             }
         });
     }
-
-        
-        function deletePost(boardNumber) {
-            if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-                location.href = '/pilotpjt/delete_post?boardNumber=' + boardNumber;
-            }
+    
+    function deletePost(boardNumber) {
+        if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+            $.ajax({
+                type: "post",
+                url: "delete_post",
+                data: { boardNumber: boardNumber },
+                success: function(data) {
+                	alert("정상적으로 삭제되었습니다.");
+                	location.href = "board_view";
+                },
+                error: function() {
+                	alert("오류 발생");
+                }
+            });
         }
+    }
+    
+    // 대댓글 폼 표시 (replyToUsername: 답글 대상 사용자, currentStep: 현재 대댓글 단계)
+    function showReplyForm(commentNumber, replyToUsername, currentStep) {
+        // 모든 대댓글 폼 숨기기
+        document.querySelectorAll('.reply-form').forEach(form => {
+            form.style.display = 'none';
+        });
+        
+        // 선택한 댓글의 대댓글 폼 표시
+        const replyForm = document.getElementById('reply-form-' + commentNumber);
+        replyForm.style.display = 'block';
+        
+        // 대댓글 단계 설정 (현재 단계 + 1)
+        const nextStep = currentStep + 1;
+        const stepInput = replyForm.querySelector('input[name="commentSubStepNumber"]');
+        stepInput.value = nextStep;
+        
+        // 답글 대상 사용자 설정
+        const replyToUserInput = document.getElementById('replyToUser-' + commentNumber);
+        replyToUserInput.value = replyToUsername;
+        
+        // 답글 대상 메시지 표시 (대댓글인 경우에만)
+        const replyToMessage = document.getElementById('replyToMessage-' + commentNumber);
+        if (currentStep > 0) {
+            replyToMessage.innerHTML = `<strong>${replyToUsername}</strong>님에게 답글 작성`;
+            replyToMessage.style.display = 'block';
+        } else {
+            replyToMessage.style.display = 'none';
+        }
+    }
+    
+    // 대댓글 폼 숨기기
+    function hideReplyForm(commentNumber) {
+        document.getElementById('reply-form-' + commentNumber).style.display = 'none';
+    }
     </script>
 </body>
 </html>

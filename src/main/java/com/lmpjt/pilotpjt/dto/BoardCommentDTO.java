@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardDTO {
+public class BoardCommentDTO {
+	private int commentNumber;
+	private int commentSubNumber;
+	private int commentSubStepNumber;
 	private int boardNumber;
 	private int userNumber;
 	private String userName;
-	private String boardTitle;
-	private String boardContent;
-	private String boardWriteDate;
-	private String boardViews;
-	private String boardLikes;
-	private String boardHit;
+	private String commentContent;
+	private String commentWriteDate;
+	private String replyToUser;
 }

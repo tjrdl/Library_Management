@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BookDTO {
 	private int bookNumber;
-	private int bookIsbn;
+	private String bookIsbn;
 	private String bookTitle;
 	private String bookComent;
-	private String bookWrite; // ÀÌ°Å ÀÌ¸§ ¸Â´ÂÁö ÁÖÀÇ
+	private String bookWrite; // ï¿½Ì°ï¿½ ï¿½Ì¸ï¿½ ï¿½Â´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	private String bookPub;
 	private Date bookDate;
 	private String bookMajorCategory;

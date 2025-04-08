@@ -76,7 +76,7 @@ public class UserController {
 		return "user_info";
 	}
 
-	@RequestMapping("/update_user_info")
+	@RequestMapping("/user_update_view")
 	public String updateUserInfo(UserDTO user) {
 		return "user_update";
 	}

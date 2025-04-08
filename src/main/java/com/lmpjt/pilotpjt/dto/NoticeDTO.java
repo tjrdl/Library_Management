@@ -13,10 +13,8 @@ public class NoticeDTO {
 	private int noticeNum;
 	private String noticeTitle;
 	private String noticeContent;
-	private String noticeWriter ="°ü¸®ÀÚ";
+	private String noticeWriter ="ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
 	private String noticeRegdate;
 	private int noticeViews = 0;
 	private String noticeCategory;
-	private boolean isNew = true;
-	private boolean fixed = false;
 }

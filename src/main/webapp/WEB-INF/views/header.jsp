@@ -93,7 +93,7 @@
                             <i class="dropdown-icon fa-solid fa-user"></i>
                             <span>마이페이지</span>
                         </a>
-                        <a href="/pilotpjt/edit_profile" class="dropdown-item">
+                        <a href="/pilotpjt/user_update_view" class="dropdown-item">
                             <i class="dropdown-icon fa-solid fa-pen-to-square"></i>
                             <span>내정보수정</span>
                         </a>
