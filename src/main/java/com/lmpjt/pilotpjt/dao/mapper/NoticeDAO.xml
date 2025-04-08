@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lmpjt.pilotpjt.dao.NoticeDAO">
+
+	<select id="NoticeView"
+		resultType="com.lmpjt.pilotpjt.dto.NoticeDTO">
+		select noticeNum, noticeWriter, noticeCategory ,noticeTitle,
+		noticeContent,
+		noticeRegdate, noticeViews
+		from
+		notice
+	</select>
+	
+
+
+	<insert id="NoticeWrite">
+		insert into notice(noticeNum,noticeTitle,noticeContent,noticeCategory)
+		values ((SELECT NVL(MAX(NOTICENUM), 0) + 1
+		FROM NOTICE), #{noticeTitle}, #{noticeContent},#{noticeCategory} )
+	</insert>
+
+
+	<select id="NoticeDetailView"
+		resultType="com.lmpjt.pilotpjt.dto.NoticeDTO">
+		select noticeNum, noticeWriter, noticeTitle, noticeContent,
+		noticeRegdate, noticeViews, noticeCategory
+		from notice
+		where
+		noticeNum=#{noticeNum}
+	</select>
+
+	<!-- void 일 경우 resultType도 없음 -->
+	<update id="NoticeModify">
+		update notice set noticeTitle=#{noticeTitle},
+		noticeContent=#{noticeContent}, noticeCategory=#{noticeCategory} where
+		noticeNum=#{noticeNum}
+	</update>
+
+	<update id="NoticeDelete">
+		delete from notice where noticeNum=#{noticeNum}
+	</update>
+		<update id="NoticeHit">
+		UPDATE notice
+		SET noticeViews = NVL(noticeViews, 0) + 1
+		WHERE noticeNum = #{noticeNum}
+	</update>
+</mapper>
