@@ -38,6 +38,7 @@ public class BoardController {
 
 	@RequestMapping("/board_write_ok")
 	public String boardViewWrite(@RequestParam HashMap<String, String> param) {
+
 		service.boardWrite(param);
 
 		return "board_view";
@@ -81,7 +82,6 @@ public class BoardController {
 		}
 		int boardNumber = Integer.parseInt(param.get("boardNumber"));
 		int userNumber = user.getUserNumber();
-//		param.put("boardNumber", String.valueOf(boardNumber)); 
 		param.put("userNumber", String.valueOf(userNumber));
 
 		if (service.boardHasLiked(param)) {
@@ -97,8 +97,11 @@ public class BoardController {
 
 	@RequestMapping("/comment_write_ok")
 	public String commentWriteOk(@RequestParam HashMap<String, String> param) {
-		bcService.bcWrite(param);
 		String boardNumber = param.get("boardNumber");
+		if (param.get("commentContent") == "") {
+			return "redirect:/board_detail_view?boardNumber=" + boardNumber;
+		}
+		bcService.bcWrite(param);
 
 		return "redirect:/board_detail_view?boardNumber=" + boardNumber;
 	}

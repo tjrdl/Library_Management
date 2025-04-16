@@ -5,6 +5,7 @@
 
 <mapper namespace="com.lmpjt.pilotpjt.dao.BoardCommentDAO">
 
+	<!-- 댓글 전체 보기 -->
     <select id="bcView"
         resultType="com.lmpjt.pilotpjt.dto.BoardCommentDTO">
         select commentNumber, commentSubNumber, commentSubStepNumber, 
@@ -39,12 +40,14 @@
         )
     </insert>
 
+	<!-- 댓글 수정 쿼리문만 작성-->
     <update id="bcModify">
         update board_comment set 
         commentContent=#{commentContent} 
         where commentNumber=#{commentNumber}
     </update>
 
+	<!-- 게시글 삭제 -->
     <delete id="boardDelete">
         delete from board_comment where commentNumber=#{commentNumber}
     </delete>

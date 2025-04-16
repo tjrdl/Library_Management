@@ -1,3 +1,17 @@
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 초기 탭 설정 (대출 중 탭 활성화)
+    const borrowedTab = document.getElementById('borrowed');
+    if (borrowedTab) {
+        borrowedTab.style.display = 'block';
+    }
+    
+    // 초기 버튼 활성화
+    const activeButton = document.querySelector('.tab-buttons .tab-button');
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+});
         // 탭 전환 함수
         function showTab(tabName) {
             // 모든 메뉴 아이템 비활성화
@@ -20,25 +34,30 @@
         }
         
         // 대출 이력 탭 전환 함수
-        function showHistoryTab(tabName) {
-            // 모든 탭 버튼 비활성화
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => {
-                button.classList.remove('active');
-            });
-            
-            // 클릭한 탭 버튼 활성화
-            event.currentTarget.classList.add('active');
-            
-            // 모든 이력 탭 콘텐츠 숨기기
-            const historyTabs = document.querySelectorAll('#history-tab .tab-content');
-            historyTabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // 선택한 이력 탭 콘텐츠 표시
-            document.getElementById(tabName + '-history').classList.add('active');
-        }
+function showHistoryTab(tabName, e) {
+    // 대출 현황 내의 탭만 대상으로 함
+    document.querySelectorAll("#books-tab .tab-content").forEach(tab => {
+        tab.style.display = "none";  // classList.remove 대신 display 속성 사용
+    });
+    
+    // 버튼 활성화 상태 변경
+    document.querySelectorAll(".tab-buttons .tab-button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+    
+    // 선택한 탭 표시
+    const selectedTab = document.getElementById(tabName);
+    if (selectedTab) {
+        selectedTab.style.display = "block";  // 선택한 탭 보이게 함
+    }
+    
+    // 버튼 활성화
+    if (e && e.target) {
+        e.target.classList.add("active");
+    }
+
+}
+
         
         // 비밀번호 변경 폼 유효성 검사
         function validatePasswordForm() {

@@ -101,14 +101,18 @@
 	    <div class="notice-navigation">
 	        <c:if test="${not empty prevNotice}">
 	            <div class="nav-item">
-	                <span class="nav-label"><i class="fas fa-chevron-up"></i> 이전글</span>
+	                <span class="nav-label">
+	                <i class="fas fa-chevron-up"></i>이전글
+	                </span>
 	                <a href="/pilotpjt/admin_notice_detail?noticeNum=${prevNotice.noticeNum}" class="nav-link">${prevNotice.noticeTitle}</a>
 	                <span class="nav-date"><fmt:formatDate value="${prevNotice.noticeRegdate}" pattern="yyyy-MM-dd"/></span>
 	            </div>
 	        </c:if>
 	        <c:if test="${not empty nextNotice}">
 	            <div class="nav-item">
-	                <span class="nav-label"><i class="fas fa-chevron-down"></i> 다음글</span>
+	                <span class="nav-label">
+	                <i class="fas fa-chevron-down"></i>다음글
+	                </span>
 	                <a href="/pilotpjt/admin_notice_detail?noticeNum=${nextNotice.noticeNum}" class="nav-link">${nextNotice.noticeTitle}</a>
 	                <span class="nav-date"><fmt:formatDate value="${nextNotice.noticeRegdate}" pattern="yyyy-MM-dd"/></span>
 	            </div>

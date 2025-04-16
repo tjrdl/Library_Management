@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.lmpjt.pilotpjt.dao.NoticeDAO;
 import com.lmpjt.pilotpjt.dto.NoticeDTO;
+
 @Service
 public class AdminServiceImpl implements AdminService {
 	@Autowired
@@ -46,11 +47,4 @@ public class AdminServiceImpl implements AdminService {
 		NoticeDAO dao = sqlSession.getMapper(NoticeDAO.class);
 		dao.NoticeDelete(param);
 	}
-
-
-
-
-	
-	
-
 }

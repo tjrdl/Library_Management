@@ -1,5 +1,5 @@
         :root {
-            --primary-color: #4a6da7;
+            --primary-color: #2563EB;
             --secondary-color: #6384c5;
             --accent-color: #8ba3d9;
             --light-color: #e8edf7;
@@ -331,7 +331,13 @@
             border-bottom: 1px solid #eee;
             margin-bottom: 20px;
         }
-        
+        .tab-container .tab-content {
+    display: none;
+}
+
+.tab-container .tab-content.active {
+    display: block;
+}
         .tab-button {
             padding: 12px 20px;
             background: none;
@@ -382,3 +388,35 @@
                 height: 150px;
             }
         }
+        
+.return-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #4a6da7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.return-button:hover {
+    background-color: #3a5a8c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.return-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.return-button i {
+    font-size: 0.9rem;
+}

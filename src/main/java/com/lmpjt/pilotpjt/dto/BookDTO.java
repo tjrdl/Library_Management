@@ -14,12 +14,11 @@ public class BookDTO {
 	private String bookIsbn;
 	private String bookTitle;
 	private String bookComent;
-	private String bookWrite; // �̰� �̸� �´��� ����
+	private String bookWrite;
 	private String bookPub;
 	private Date bookDate;
 	private String bookMajorCategory;
-	private String bookSubCategory;	
+	private String bookSubCategory;
 	private int bookCount;
-	private int bookBorrowcount; 
-
+	private int bookBorrowcount;
 }

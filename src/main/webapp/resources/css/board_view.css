@@ -1,9 +1,9 @@
         :root {
-            --primary-color: #4a6da7;
-            --secondary-color: #6384c5;
-            --accent-color: #8ba3d9;
-            --light-color: #e8edf7;
-            --dark-color: #2c4270;
+            --primary: #2563eb;
+            --secondary: #475569;
+            --accent: #8ba3d9;
+            --light: #f8fafc;
+            --dark: #1e293b;
         }
         
         body {
@@ -30,7 +30,7 @@
         .board-title {
             font-size: 28px;
             font-weight: 700;
-            color: var(--dark-color);
+            color: var(--dark);
         }
         
         .board-actions {
@@ -65,7 +65,7 @@
         
         .search-button {
             padding: 10px 20px;
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
             border: none;
             cursor: pointer;
@@ -73,7 +73,7 @@
         }
         
         .search-button:hover {
-            background-color: var(--dark-color);
+            background-color: var(--dark);
         }
         
         .board-table {
@@ -86,7 +86,7 @@
         }
         
         .board-table th {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
             color: white;
             padding: 15px;
             text-align: left;
@@ -140,7 +140,7 @@
         }
         
         .title-link:hover {
-            color: var(--secondary-color);
+            color: var(--secondary);
         }
         
         .pagination {
@@ -171,7 +171,7 @@
         }
         
         .page-item.active {
-            background-color: var(--primary-color);
+            background-color: var(--primary);
         }
         
         .page-item.active .page-link {
@@ -184,7 +184,7 @@
         
         .write-button {
             padding: 10px 20px;
-            background-color: var(--secondary-color);
+            background-color: var(--secondary);
             color: white;
             border: none;
             border-radius: 4px;
@@ -198,7 +198,7 @@
         }
         
         .write-button:hover {
-            background-color: var(--dark-color);
+            background-color: var(--dark);
         }
         
         .sort-options {
@@ -219,9 +219,9 @@
         }
         
         .sort-option:hover, .sort-option.active {
-            background-color: var(--accent-color);
+            background-color: var(--accent);
             color: white;
-            border-color: var(--accent-color);
+            border-color: var(--accent);
         }
         
         .board-info {
@@ -234,7 +234,7 @@
         
         .board-info i {
             font-size: 14px;
-            color: var(--secondary-color);
+            color: var(--secondary);
         }
         
         .empty-message {

@@ -103,6 +103,7 @@
 	    <c:choose>
 	        <c:when test="${not empty noticeList}">
 	            <c:forEach items="${noticeList}" var="notice">
+<%-- 	            <div class="notice-card ${notice.fixed ? 'fixed-notice' : ''}"> --%>
 	                <div class="notice-card">
 	                    <a href="/pilotpjt/admin_notice_detail?noticeNum=${notice.noticeNum}" class="notice-link">
 	                        <div class="notice-content">
@@ -125,7 +126,7 @@
 	                                ${notice.noticeTitle}
 	                            </h3>
 	                            
-	                            <p class="notice-excerpt">${notice.noticeContent}</p>
+	                            <p class="notice-excerpt">${notice.noticeContent }</p>
 	                            
 	                            <div class="notice-meta">
 	                                <div class="meta-left">

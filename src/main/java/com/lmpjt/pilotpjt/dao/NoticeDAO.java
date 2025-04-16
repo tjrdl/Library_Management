@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import com.lmpjt.pilotpjt.dto.NoticeDTO;
 
-
-
 public interface NoticeDAO {
 	public void NoticeWrite(HashMap<String, String> param);
 

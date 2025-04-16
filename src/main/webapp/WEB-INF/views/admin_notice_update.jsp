@@ -32,7 +32,6 @@
                 <p class="page-description">도서관리 시스템의 새로운 공지사항을 작성합니다.</p>
             </div>
             
-<!--             <form action="/pilotpjt/notice_write" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()"> -->
                 <form id = "admin_frm">
                 <div class="form-group">
                     <label for="category" class="form-label">카테고리</label>
@@ -40,7 +39,7 @@
                         <option value="" selected disabled hidden>${notice.noticeCategory}</option>
                         <option value="important">중요 공지</option>
                         <option value="event">이벤트</option>
-                        <option value="info">안내</option>
+<!--                         <option value="info">안내</option> -->
                         <option value="update">업데이트</option>
                     </select>
                 </div>
@@ -53,8 +52,7 @@
                 <div class="form-group">
                     <label for="editor" class="form-label">내용</label>
                     <input type="hidden" name="noticeContent" id="noticeContent">
-                    <input type="hidden" name="noticeNum" id="noticeNum" value="${notice.noticeNum}">
-                    
+                    <input type="hidden" name="noticeNum" id="noticeNum" value="${notice.noticeNum}">                    
                     <div id="editor" class="editor-container">${notice.noticeContent}</div>
                     <div id="contentError" class="error-message"></div>
                 </div>

@@ -5,15 +5,17 @@
 
 <mapper namespace="com.lmpjt.pilotpjt.dao.BoardDAO">
 
+	<!-- 게시판 전체 보기 -->
 	<select id="boardView"
 		resultType="com.lmpjt.pilotpjt.dto.BoardDTO">
 		select boardNumber, userNumber, userName, boardTitle,
 		boardContent,
 		boardWriteDate, boardHit, boardViews, boardLikes
 		from
-		board
+		board order by boardWriteDate desc
 	</select>
 
+	<!-- 게시글 작성 -->
 	<insert id="boardWrite">
 		insert into board(boardNumber, userNumber, userName,
 		boardTitle, boardContent)
@@ -22,15 +24,16 @@
 		#{boardContent})
 	</insert>
 
+	<!-- 게시글 디테일 -->
 	<select id="boardDetailView"
 		resultType="com.lmpjt.pilotpjt.dto.BoardDTO">
-		select boardNumber, userNumber, boardTitle, boardContent,
-		boardWriteDate, boardHit, boardViews, boardLikes, userName
-		from board
-		where
-		boardNumber=#{boardNumber}
+		select boardNumber, userNumber, userName, boardTitle,
+		boardContent, boardWriteDate, boardHit, boardViews, boardLikes
+		from
+		board where boardNumber=#{boardNumber}
 	</select>
 
+	<!-- 게시글 수정 -->
 	<update id="boardModify"> update board set boardTitle=#{boardTitle},
 		boardContent=#{boardContent} where boardNumber=#{boardNumber}
 	</update>

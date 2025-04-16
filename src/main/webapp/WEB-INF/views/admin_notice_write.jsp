@@ -40,7 +40,7 @@
                         <option value="" selected disabled hidden>카테고리 선택</option>
                         <option value="important">중요 공지</option>
                         <option value="event">이벤트</option>
-                        <option value="info">안내</option>
+<!--                         <option value="info">안내</option> -->
                         <option value="update">업데이트</option>
                     </select>
                 </div>

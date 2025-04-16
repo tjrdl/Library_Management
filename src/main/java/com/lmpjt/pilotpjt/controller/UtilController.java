@@ -9,16 +9,16 @@ import com.lmpjt.pilotpjt.Service.UtilService;
 
 @Controller
 public class UtilController {
-    @Autowired
-    private UtilService utilService;
+	@Autowired
+	private UtilService utilService;
 
-    @RequestMapping("/stats")
-    public String getStatistics(Model model) {
-        model.addAttribute("totalBooks", utilService.getTotalBooks());
-        model.addAttribute("totalUsers", utilService.getTotalUsers());
-        model.addAttribute("borrowedBooks", utilService.getBorrowedBooks());
-        model.addAttribute("overdueBooks", utilService.getOverdueBooks());
+	@RequestMapping("/stats")
+	public String getStatistics(Model model) {
+		model.addAttribute("totalBooks", utilService.getTotalBooks());
+		model.addAttribute("totalUsers", utilService.getTotalUsers());
+		model.addAttribute("borrowedBooks", utilService.getBorrowedBooks());
+		model.addAttribute("overdueBooks", utilService.getOverdueBooks());
 
-        return "dashboard";  // dashboard.jsp ∑Œ ¿Ãµø
-    }
+		return "dashboard";
+	}
 }

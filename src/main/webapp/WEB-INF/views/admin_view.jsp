@@ -56,7 +56,7 @@
 				<div class="menu-category">도서 관리</div>
 				<ul class="nav-list">
 					<li class="nav-item"><a href="book_insert_view"
-						class="nav-link"> <i class="ri-book-add-line"></i> <span>도서
+						class="nav-link"> <i class="ri-file-add-line"></i> <span>도서
 								등록</span>
 					</a></li>
 					<li class="nav-item"><a href="book_manage" class="nav-link">
@@ -171,7 +171,7 @@
 			<div class="quick-actions">
 				<div class="action-card">
 					<div class="action-icon">
-						<i class="ri-book-add-line"></i>
+						<i class="ri-file-add-line"></i>
 					</div>
 					<h3>도서 등록</h3>
 					<p>새로운 도서를 시스템에 등록합니다.</p>
@@ -193,7 +193,7 @@
 					</div>
 					<h3>공지사항 등록</h3>
 					<p>새로운 공지사항을 등록합니다.</p>
-					<a href="notice_insert">등록하기</a>
+					<a href="admin_notice_write">등록하기</a>
 				</div>
 
 				<div class="action-card">

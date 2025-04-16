@@ -69,9 +69,9 @@
                     </tr>
                 </c:if>
                 
-                <c:forEach items="${boardList}" var="board">
+                <c:forEach items="${boardList}" var="board" varStatus="status">
                     <tr>
-                        <td class="board-number">${board.boardNumber}</td>
+                        <td class="board-number">${status.count}</td>
                         <td class="board-title-col">
                             <a href="board_detail_view?boardNumber=${board.boardNumber}" class="title-link">${board.boardTitle}</a>
                         </td>

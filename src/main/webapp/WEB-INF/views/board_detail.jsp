@@ -1,279 +1,190 @@
 <%@page import="com.lmpjt.pilotpjt.dto.UserDTO"%>
 <%@page import="com.lmpjt.pilotpjt.dto.BoardDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${board.boardTitle} - 잉크 트리</title>
-    <link rel="stylesheet" type="text/css" href="/pilotpjt/resources/css/board_detail.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/pilotpjt/resources/js/baord_detail.js"></script>
-    <style>
-        /* 대댓글 관련 스타일 */
-        .reply-button {
-            background: none;
-            border: none;
-            color: #6384c5;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            margin-top: 8px;
-        }
-        
-        .reply-button:hover {
-            color: #1a72ff;
-            text-decoration: underline;
-        }
-        
-        .reply-form {
-            margin-top: 10px;
-            margin-bottom: 15px;
-            padding-left: 20px;
-            border-left: 2px solid #e8f1ff;
-            display: none;
-        }
-        
-        .reply-textarea {
-            width: 100%;
-            min-height: 60px;
-            padding: 8px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            resize: vertical;
-            margin-bottom: 8px;
-        }
-        
-        .reply-submit {
-            background-color: #6384c5;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
-        }
-        
-        .reply-submit:hover {
-            background-color: #4a6da7;
-        }
-        
-        .reply-cancel {
-            background-color: #f8f9fa;
-            color: #6c757d;
-            border: 1px solid #dee2e6;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            float: right;
-            margin-right: 8px;
-        }
-        
-        .reply-cancel:hover {
-            background-color: #e9ecef;
-        }
-        
-        .reply-item {
-            margin-left: 30px;
-            padding-left: 15px;
-            border-left: 2px solid #e8f1ff;
-            margin-top: 10px;
-        }
-        
-        .reply-indicator {
-            display: flex;
-            align-items: center;
-            color: #6384c5;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-        
-        .reply-indicator i {
-            transform: rotate(180deg);
-            margin-right: 5px;
-        }
-        
-        .nested-reply {
-            margin-left: 15px;
-        }
-        
-        .reply-to {
-            font-size: 0.8rem;
-            color: #6384c5;
-            margin-bottom: 5px;
-        }
-        
-        .reply-to strong {
-            font-weight: 600;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${board.boardTitle}- 잉크 트리</title>
+<link rel="stylesheet" type="text/css"
+	href="/pilotpjt/resources/css/board_detail.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="/pilotpjt/resources/js/baord_detail.js"></script>
 </head>
 <body>
-    <jsp:include page="header.jsp" />
-    
-    <div class="board-container">
-        <div class="board-detail">
-            <div class="board-header">
-                <h1 class="board-title">${board.boardTitle}</h1>
-                <div class="board-meta">
-                    <div class="author-info">
-                    
-                        <div class="author-avatar">${board.userName.substring(0,1)}</div>
-                        <div>
-                            <div>${board.userName}</div>
-                            <div>${board.boardWriteDate}</div>
-                        </div>
-                    </div>
-                    <div class="post-info">
-                        <div class="info-item">
-                            <i class="fas fa-eye"></i>
-                            <span>${board.boardViews}</span>
-                        </div>
-                        <div class="info-item">
-                            <i class="fas fa-heart"></i>
-                            <span>${board.boardLikes}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="board-content">
-                ${board.boardContent}
-            </div>
-            
-            <div class="board-actions">
-                <button class="like-button" onclick="likePost(${board.boardNumber})">
-                    <i class="fas fa-heart"></i>
-                    <span>추천</span>
-                    <span class="like-count">${board.boardLikes}</span>
-                </button>
-                
-                <div class="action-buttons">
-                    <% 
-                    UserDTO user = (UserDTO) session.getAttribute("loginUser");
-                    BoardDTO board = (BoardDTO) request.getAttribute("board");
-                    
-                    if (user != null && (user.getUserNumber() == board.getUserNumber() || user.getUserAdmin() == 1)) { 
-                    %>
+	<jsp:include page="header.jsp" />
+
+	<div class="board-container">
+		<div class="board-detail">
+			<div class="board-header">
+				<h1 class="board-title">${board.boardTitle}</h1>
+				<div class="board-meta">
+					<div class="author-info">
+
+						<div class="author-avatar">${board.userName.substring(0,1)}</div>
+						<div>
+							<div>${board.userName}</div>
+							<div>${board.boardWriteDate}</div>
+						</div>
+					</div>
+					<div class="post-info">
+						<div class="info-item">
+							<i class="fas fa-eye"></i> <span>${board.boardViews}</span>
+						</div>
+						<div class="info-item">
+							<i class="fas fa-heart"></i> <span>${board.boardLikes}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="board-content">${board.boardContent}</div>
+
+			<div class="board-actions">
+				<button class="like-button" onclick="likePost(${board.boardNumber})">
+					<i class="fas fa-heart"></i> <span>추천</span> <span
+						class="like-count">${board.boardLikes}</span>
+				</button>
+
+				<div class="action-buttons">
+					<%
+					UserDTO user = (UserDTO) session.getAttribute("loginUser");
+					BoardDTO board = (BoardDTO) request.getAttribute("board");
+
+					if (user != null && (user.getUserNumber() == board.getUserNumber() || user.getUserAdmin() == 1)) {
+					%>
 					<button class="action-button edit-button"
 						onclick="location.href='/pilotpjt/board_update?boardNumber=${board.boardNumber}'">
 						<i class="fas fa-edit"></i> 수정
 					</button>
-                    <button class="action-button delete-button" onclick="deletePost(${board.boardNumber})">
-                        <i class="fas fa-trash"></i> 삭제
-                    </button>
-                    <% } %>
-                    <button class="action-button list-button" onclick="location.href='/pilotpjt/board_view'">
-                        <i class="fas fa-list"></i> 목록
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="comments-section">
-            <h2 class="comments-header">댓글</h2>
+					<button class="action-button delete-button"
+						onclick="deletePost(${board.boardNumber})">
+						<i class="fas fa-trash"></i> 삭제
+					</button>
+					<%
+					}
+					%>
+					<button class="action-button list-button"
+						onclick="location.href='/pilotpjt/board_view'">
+						<i class="fas fa-list"></i> 목록
+					</button>
+				</div>
+			</div>
+		</div>
 
-            <% if (user != null) { %>
-            <div class="comment-form">
-                <form action="/pilotpjt/comment_write_ok" method="post">
-                    <input type="hidden" name="boardNumber" value="${board.boardNumber}">
-                    <input type="hidden" name="userNumber" value="<%= user.getUserNumber()%>">
-                    <input type="hidden" name="userName" value="<%= user.getUserName()%>">
-                    <input type="hidden" name="commentSubNumber" value="0">
-                    <input type="hidden" name="commentSubStepNumber" value="0">
-                    <textarea name="commentContent" class="comment-textarea" placeholder="댓글을 작성해주세요"></textarea>
-                    <button type="submit" class="comment-submit">댓글 작성</button>
-                    <div style="clear: both;"></div>
-                </form>
-            </div>
-            <% } else { %>
-            <div class="comment-form">
-                <p style="text-align: center; color: #888;">댓글을 작성하려면 <a href="/pilotpjt/loginView" style="color: var(--primary-color);">로그인</a>이 필요합니다.</p>
-            </div>
-            <% } %>
-            
-            <div class="comment-list">
-                <c:if test="${empty commentList}">
-                    <div class="no-comments">
-                        <p>아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</p>
-                    </div>
-                </c:if>
-                
-                <!-- 메인 댓글 표시 -->
-                <c:forEach items="${commentList}" var="comment">
-                    <c:if test="${comment.commentSubNumber == 0}">
-                        <div class="comment-item" id="comment-${comment.commentNumber}">
-                            <div class="comment-header">
-                                <div class="comment-author">${comment.userName}</div>
-                                <div class="comment-date">${comment.commentWriteDate}</div>
-                            </div>
-                            <div class="comment-content">${comment.commentContent}</div>
-                            
-                            <!-- 답글 버튼 -->
-                            <% if (user != null) { %>
-                            <button class="reply-button" onclick="showReplyForm(${comment.commentNumber}, '${comment.userName}', 0)">
-                                <i class="fas fa-reply"></i> 답글
-                            </button>
-                            
-                            <!-- 대댓글 작성 폼 -->
-                            <div class="reply-form" id="reply-form-${comment.commentNumber}">
-                                <form action="/pilotpjt/comment_write_ok" method="post">
-                                    <input type="hidden" name="boardNumber" value="${board.boardNumber}">
-                                    <input type="hidden" name="userNumber" value="<%= user.getUserNumber()%>">
-                                    <input type="hidden" name="userName" value="<%= user.getUserName()%>">
-                                    <input type="hidden" name="commentSubNumber" value="${comment.commentNumber}">
-                                    <input type="hidden" name="commentSubStepNumber" value="1">
-                                    <input type="hidden" id="replyToUser-${comment.commentNumber}" name="replyToUser" value="">
-                                    <div id="replyToMessage-${comment.commentNumber}" class="reply-to"></div>
-                                    <textarea name="commentContent" class="reply-textarea" placeholder="답글을 작성해주세요"></textarea>
-                                    <button type="button" class="reply-cancel" onclick="hideReplyForm(${comment.commentNumber})">취소</button>
-                                    <button type="submit" class="reply-submit">답글 작성</button>
-                                    <div style="clear: both;"></div>
-                                </form>
-                            </div>
-                            <% } %>
-                            
-                            <!-- 대댓글 표시 (commentSubStepNumber 순서대로 정렬) -->
-                            <c:forEach items="${commentList}" var="reply">
-                                <c:if test="${reply.commentSubNumber == comment.commentNumber}">
-                                    <div class="reply-item" id="comment-${reply.commentNumber}">
-                                        <div class="reply-indicator">
-                                            <i class="fas fa-reply"></i> 답글
-                                        </div>
-                                        <div class="comment-header">
-                                            <div class="comment-author">${reply.userName}</div>
-                                            <div class="comment-date">${reply.commentWriteDate}</div>
-                                        </div>
-<%--                                         <c:if test="${not empty reply.replyToUser && reply.commentSubStepNumber > 1}"> --%>
-<!--                                             <div class="reply-to"> -->
-<%--                                                 <strong>${reply.replyToUser}</strong>님에게 답글 --%>
-<!--                                             </div> -->
-<%--                                         </c:if> --%>
-                                        <div class="comment-content">${reply.commentContent}</div>
-                                        
-                                        <!-- 대댓글에 대한 답글 버튼 -->
-<%--                                         <% if (user != null) { %> --%>
-<%--                                         <button class="reply-button" onclick="showReplyForm(${comment.commentNumber}, '${reply.userName}', ${reply.commentSubStepNumber})"> --%>
-<!--                                             <i class="fas fa-reply"></i> 답글 -->
-<!--                                         </button> -->
-<%--                                         <% } %> --%>
-                                    </div>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                    </c:if>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-    
-    <script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
-    <script>
+		<div class="comments-section">
+			<h2 class="comments-header">댓글</h2>
+
+			<%
+			if (user != null) {
+			%>
+			<div class="comment-form">
+				<form action="/pilotpjt/comment_write_ok" method="post">
+					<input type="hidden" name="boardNumber"
+						value="${board.boardNumber}"> <input type="hidden"
+						name="userNumber" value="<%=user.getUserNumber()%>"> <input
+						type="hidden" name="userName" value="<%=user.getUserName()%>">
+					<input type="hidden" name="commentSubNumber" value="0"> <input
+						type="hidden" name="commentSubStepNumber" value="0">
+					<textarea name="commentContent" class="comment-textarea"
+						placeholder="댓글을 작성해주세요"></textarea>
+					<button type="submit" class="comment-submit">댓글 작성</button>
+					<div style="clear: both;"></div>
+				</form>
+			</div>
+			<%
+			} else {
+			%>
+			<div class="comment-form">
+				<p style="text-align: center; color: #888;">
+					댓글을 작성하려면 <a href="/pilotpjt/loginView"
+						style="color: var(- -primary-color);">로그인</a>이 필요합니다.
+				</p>
+			</div>
+			<%
+			}
+			%>
+
+			<div class="comment-list">
+				<c:if test="${empty commentList}">
+					<div class="no-comments">
+						<p>아직 댓글이 없습니다. 첫 댓글을 작성해보세요!</p>
+					</div>
+				</c:if>
+
+				<!-- 메인 댓글 표시 -->
+				<c:forEach items="${commentList}" var="comment">
+					<c:if test="${comment.commentSubNumber == 0}">
+						<div class="comment-item" id="comment-${comment.commentNumber}">
+							<div class="comment-header">
+								<div class="comment-author">${comment.userName}</div>
+								<div class="comment-content">${comment.commentContent}</div>
+								<div class="comment-date">${comment.commentWriteDate}</div>
+							</div>
+
+							<!-- 답글 버튼 -->
+							<%
+							if (user != null) {
+							%>
+							<button class="reply-button"
+								onclick="showReplyForm(${comment.commentNumber}, '${comment.userName}', 0)">
+								<i class="fas fa-reply"></i> 답글
+							</button>
+
+							<!-- 대댓글 작성 폼 -->
+							<div class="reply-form" id="reply-form-${comment.commentNumber}">
+								<form action="/pilotpjt/comment_write_ok" method="post">
+									<input type="hidden" name="boardNumber"
+										value="${board.boardNumber}"> <input type="hidden"
+										name="userNumber" value="<%=user.getUserNumber()%>">
+									<input type="hidden" name="userName"
+										value="<%=user.getUserName()%>"> <input type="hidden"
+										name="commentSubNumber" value="${comment.commentNumber}">
+									<input type="hidden" name="commentSubStepNumber" value="1">
+									<input type="hidden" id="replyToUser-${comment.commentNumber}"
+										name="replyToUser" value="">
+									<div id="replyToMessage-${comment.commentNumber}"
+										class="reply-to"></div>
+									<textarea name="commentContent" class="reply-textarea"
+										placeholder="답글을 작성해주세요"></textarea>
+									<button type="button" class="reply-cancel"
+										onclick="hideReplyForm(${comment.commentNumber})">취소</button>
+									<button type="submit" class="reply-submit">답글 작성</button>
+									<div style="clear: both;"></div>
+								</form>
+							</div>
+							<%
+							}
+							%>
+
+							<!-- 대댓글 표시 (commentSubStepNumber 순서대로 정렬) -->
+							<c:forEach items="${commentList}" var="reply">
+								<c:if test="${reply.commentSubNumber == comment.commentNumber}">
+									<div class="reply-item" id="comment-${reply.commentNumber}">
+										<div class="reply-indicator">
+											<i class="fas fa-reply"></i>
+										</div>
+										<div class="comment-header">
+											<div class="comment-author">${reply.userName}</div>
+											<div class="comment-content">${reply.commentContent}</div>
+											<div class="comment-date">${reply.commentWriteDate}</div>
+										</div>
+									</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</c:if>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
+
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
+	<script>
     function likePost(boardNumber) {
         $.ajax({
             type: "post",

@@ -18,7 +18,7 @@
     }
     h2 {
         text-align: center;
-        color: #1e3a8a;
+        color: #2563EB;
         margin-bottom: 30px;
         font-size: 28px;
     }
@@ -46,7 +46,7 @@
     }
     input[type="text"]:focus,
     input[type="password"]:focus {
-        border-color: #1e3a8a;
+        border-color: #2563EB;
         outline: none;
         box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2);
     }
@@ -66,11 +66,11 @@
         transition: background-color 0.3s;
     }
     .btn-primary {
-        background-color: #1e3a8a;
+        background-color: #2563EB;
         color: white;
     }
     .btn-primary:hover {
-        background-color: #1e40af;
+        background-color: #1D4ED8;
     }
     .btn-secondary {
         background-color: #e5e7eb;
@@ -130,7 +130,7 @@
         font-size: 14px;
     }
     .forgot-password a:hover {
-        color: #1e3a8a;
+        color: #2563EB;
         text-decoration: underline;
     }
     .library-logo {

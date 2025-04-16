@@ -18,8 +18,11 @@ public interface BoardDAO {
 
 	public void boardHit(HashMap<String, String> param);
 
-	public int boardCheckLiked(HashMap<String, String>param);
+	public int boardCheckLiked(HashMap<String, String> param);
+
 	public void boardAddLike(HashMap<String, String> param);
-	public void boardIncrementLike(HashMap<String, String>param);
-	public int boardgetLike(HashMap<String, String>param);
+
+	public void boardIncrementLike(HashMap<String, String> param);
+
+	public int boardgetLike(HashMap<String, String> param);
 }

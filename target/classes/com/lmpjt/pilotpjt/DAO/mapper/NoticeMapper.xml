@@ -5,24 +5,28 @@
 
 <mapper namespace="com.lmpjt.pilotpjt.dao.NoticeDAO">
 
+	<!-- 공지사항 전체 -->
 	<select id="NoticeView"
 		resultType="com.lmpjt.pilotpjt.dto.NoticeDTO">
-		select noticeNum, noticeWriter, noticeCategory ,noticeTitle,
+		select noticeNum, noticeWriter, noticeCategory
+		,noticeTitle,
 		noticeContent,
 		noticeRegdate, noticeViews
-		from
-		notice
+		from notice
+		order by noticeRegdate desc
 	</select>
-	
 
-
+	<!-- 공지사항 작성 -->
 	<insert id="NoticeWrite">
-		insert into notice(noticeNum,noticeTitle,noticeContent,noticeCategory)
-		values ((SELECT NVL(MAX(NOTICENUM), 0) + 1
-		FROM NOTICE), #{noticeTitle}, #{noticeContent},#{noticeCategory} )
+		insert into
+		notice(noticeNum,noticeTitle,noticeContent,noticeCategory)
+		values
+		((SELECT NVL(MAX(NOTICENUM), 0) + 1
+		FROM NOTICE), #{noticeTitle},
+		#{noticeContent},#{noticeCategory} )
 	</insert>
 
-
+	<!-- 공지사항 디테일 -->
 	<select id="NoticeDetailView"
 		resultType="com.lmpjt.pilotpjt.dto.NoticeDTO">
 		select noticeNum, noticeWriter, noticeTitle, noticeContent,
@@ -32,19 +36,23 @@
 		noticeNum=#{noticeNum}
 	</select>
 
-	<!-- void 일 경우 resultType도 없음 -->
+	<!-- 공지사항 수정 -->
 	<update id="NoticeModify">
 		update notice set noticeTitle=#{noticeTitle},
 		noticeContent=#{noticeContent}, noticeCategory=#{noticeCategory} where
 		noticeNum=#{noticeNum}
 	</update>
 
+	<!-- 공지사항 삭제 -->
 	<update id="NoticeDelete">
 		delete from notice where noticeNum=#{noticeNum}
 	</update>
-		<update id="NoticeHit">
+
+	<!-- 공지사항 조회수 -->
+	<update id="NoticeHit">
 		UPDATE notice
-		SET noticeViews = NVL(noticeViews, 0) + 1
+		SET noticeViews = NVL(noticeViews, 0) +
+		1
 		WHERE noticeNum = #{noticeNum}
 	</update>
 </mapper>

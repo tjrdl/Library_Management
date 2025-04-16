@@ -1,0 +1,160 @@
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lmpjt.pilotpjt.dao.BookDAO">
+
+	<!-- 책 등록 (관리자전용) -->
+	<insert id="insertBook">
+		insert into bookinfo(bookNumber, bookTitle,
+		bookComent, bookWrite, bookPub,
+		bookDate, bookMajorCategory,
+		bookSubCategory, bookCount, bookIsbn)
+		values ((select
+		nvl(max(bookNumber), 0)+1
+		from bookinfo),
+		#{bookTitle}, #{bookComent},
+		#{bookWrite}, #{bookPub},
+		#{bookDate}, #{bookMajorCategory},
+		#{bookSubCategory}, #{bookCount}, #{bookIsbn})
+	</insert>
+	<!-- 책 수정(관리자전용) -->
+	<update id="updateBook"> update bookinfo set bookIsbn=#{bookIsbn},
+		bookTitle=#{bookTitle}, bookComent=#{bookComent},
+		bookWrite=#{bookWrite}, bookPub=#{bookPub}, bookDate=#{bookDate},
+		bookMajorCategory=#{bookMajorCategory},
+		bookSubCategory=#{bookSubCategory}, bookCount=#{bookCount} where
+		bookNumber=#{bookNumber}
+	</update>
+
+	<!-- 메인에 보여질 책 -->
+	<select id="mainBookInfo"
+		resultType="com.lmpjt.pilotpjt.dto.BookDTO">
+		SELECT
+		bookNumber,
+		bookIsbn,
+		bookTitle,
+		bookComent,
+		bookWrite,
+		bookPub,
+		bookDate,
+		SUBSTR(bookMajorCategory, INSTR(bookMajorCategory, '-') + 1) AS bookMajorCategory,
+		SUBSTR(bookSubCategory, INSTR(bookSubCategory, '-') + 1) AS
+		bookSubCategory,
+		bookCount,
+		bookBorrowCount
+		FROM (
+		SELECT *
+		FROM bookinfo
+		ORDER BY bookBorrowCount DESC
+		)
+		WHERE ROWNUM &lt;= 10
+	</select>
+
+	<!-- 도서검색 카테고리별로 정리 -->
+	<select id="searchBookInfo"
+		resultType="com.lmpjt.pilotpjt.dto.BookDTO" parameterType="map">
+		SELECT
+		bookNumber,
+		bookIsbn,
+		bookTitle,
+		bookComent,
+		bookWrite,
+		bookPub,
+		bookDate,
+		SUBSTR(bookMajorCategory, INSTR(bookMajorCategory, '-') + 1) AS bookMajorCategory,
+		SUBSTR(bookSubCategory, INSTR(bookSubCategory, '-') + 1) AS bookSubCategory,
+		bookCount,
+		bookBorrowCount
+		FROM bookinfo
+		WHERE 1=1
+
+		<choose>
+			<when
+				test="searchType == 'title' and searchKeyword != null and searchKeyword != ''">
+				AND bookTitle LIKE '%' || #{searchKeyword} || '%'
+			</when>
+			<when
+				test="searchType == 'author' and searchKeyword != null and searchKeyword != ''">
+				AND bookWrite LIKE '%' || #{searchKeyword} || '%'
+			</when>
+			<when
+				test="searchType == 'isbn' and searchKeyword != null and searchKeyword != ''">
+				AND bookIsbn LIKE '%' || #{searchKeyword} || '%'
+			</when>
+			<when
+				test="searchType == 'publisher' and searchKeyword != null and searchKeyword != ''">
+				AND bookPub LIKE '%' || #{searchKeyword} || '%'
+			</when>
+		</choose>
+
+		<if test="majorCategory != null and majorCategory != ''">
+			AND bookMajorCategory = #{majorCategory}
+		</if>
+
+		<if test="subCategory != null and subCategory != ''">
+			AND bookSubCategory = #{subCategory}
+		</if>
+
+		ORDER BY bookTitle ASC
+	</select>
+
+	<!-- 책 디테일 -->
+	<select id="bookDetailInfo"
+		resultType="com.lmpjt.pilotpjt.dto.BookDTO">
+		select
+		bookNumber,
+		bookIsbn,
+		bookTitle,
+		bookComent,
+		bookWrite,
+		bookPub,
+		bookDate,
+		SUBSTR(bookMajorCategory, INSTR(bookMajorCategory, '-') + 1) AS bookMajorCategory,
+		SUBSTR(bookSubCategory, INSTR(bookSubCategory, '-') + 1) AS bookSubCategory,
+		bookCount,
+		bookBorrowCount
+		from bookinfo where bookNumber=#{bookNumber}
+	</select>
+
+	<!-- 책 대출 -->
+	<insert id="bookBorrow">
+		insert into book_borrow(BORROWNUMBER, USERNUMBER,
+		BOOKNUMBER)
+		values ((select nvl(max(BORROWNUMBER), 0)+1
+		from
+		book_borrow),${userNumber},${bookNumber})
+	</insert>
+
+	<!-- 책 반납 -->
+	<insert id="bookReturn">
+		insert into book_record(recordNumber, USERNUMBER,
+		BOOKNUMBER) values
+		((select nvl(max(recordNumber), 0)+1 from
+		book_record),${userNumber},${bookNumber})
+	</insert>
+
+	<!-- 책 대출현황 -->
+	<select id="bookBorrowed"
+		resultType="com.lmpjt.pilotpjt.dto.BookRecordDTO">
+		select bookTitle, bookWrite, borrowNumber, userNumber,
+		bookNumber, bookBorrowDate, bookReturnDate
+		from book_borrow where
+		userNumber=#{userNumber}
+	</select>
+
+	<!-- 대출,반납 전체 기록 -->
+	<select id="bookRecord"
+		resultType="com.lmpjt.pilotpjt.dto.BookRecordDTO">
+		select recordNumber, userNumber, bookNumber,
+		bookReturnDate, bookBorrowDate, bookTitle, bookWrite from book_record
+		where userNumber=#{userNumber}
+	</select>
+
+	<!-- 삭제 -->
+	<update id="deleteBook">
+		delete from bookinfo where bookNumber=#{bookNumber}
+	</update>
+
+</mapper>

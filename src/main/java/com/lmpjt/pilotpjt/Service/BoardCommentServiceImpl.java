@@ -14,11 +14,11 @@ import com.lmpjt.pilotpjt.dto.BoardCommentDTO;
 public class BoardCommentServiceImpl implements BoardCommentService {
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	@Override
 	public ArrayList<BoardCommentDTO> bcView(HashMap<String, String> param) {
 		BoardCommentDAO dao = sqlSession.getMapper(BoardCommentDAO.class);
-		
+
 		ArrayList<BoardCommentDTO> list = dao.bcView(param);
 		return list;
 	}
@@ -26,7 +26,6 @@ public class BoardCommentServiceImpl implements BoardCommentService {
 	@Override
 	public void bcWrite(HashMap<String, String> param) {
 		BoardCommentDAO dao = sqlSession.getMapper(BoardCommentDAO.class);
-		System.out.println("service : " + param);
 		dao.bcWrite(param);
 	}
 

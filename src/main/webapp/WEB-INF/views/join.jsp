@@ -11,8 +11,13 @@
 <script src="${pageContext.request.contextPath}/resources/js/jquery.js"></script>
 <script type="text/javascript">
 function fn_submit() {
+    const form = document.getElementById("joinForm"); 
+    // 유효성 검사 실행
+    if (!form.checkValidity()) {
+        form.reportValidity();  // 브라우저 기본 경고창 띄움
+        return;  // 중단
+    }
     var formData = $("#joinForm").serialize();
-
     $.ajax({
         type: "post",
         data: formData,
@@ -30,7 +35,6 @@ function fn_submit() {
         }
     });
 }
-
 </script>
 </head>
 <body>
@@ -126,31 +130,32 @@ function fn_submit() {
 			
 			<div class="form-group">
 				<label>생년월일 <span class="required-mark">*</span></label>
+				
 				<input type="date" name="userBirth"
 				required
 				oninvalid="this.setCustomValidity('생년월일을 선택해주세요.')"
 				oninput="setCustomValidity('')">
+				
 				<span class="input-hint">생년월일을 선택해주세요.</span>
 				<span class="error-message">생년월일을 선택해주세요.</span>
 			</div>
 			
 			<div class="form-group full-width">
 				<label>주소 <span class="required-mark">*</span></label>
-				<input type="text" name="userZipCode" id="zipCode"
-				    required
+				
+				<input type="text" name="userZipCode" id="zipCode" required
 				    placeholder="우편번호 입력"
 				    oninvalid="this.setCustomValidity('우편번호를 선택해주세요.')"
-					oninput="setCustomValidity('')"
-			    	readonly>
+					oninput="setCustomValidity('')">
+
+			    	
 			    <span class="input-hint">우편번호를 입력해주세요.</span>
 				<span class="error-message">우편번호를 입력해주세요.</span>
 				<div class="address-search">
-				    <input type="text" name="userAddress" id="userAddress"
-				    required
+				    <input type="text" name="userAddress" id="userAddress" required
 				    placeholder="도로명 또는 지번 주소 입력"
 				    oninvalid="this.setCustomValidity('주소를 입력해주세요.')"
-				    oninput="setCustomValidity('')"
-				    readonly>
+				    oninput="setCustomValidity('')">
 				    <button type="button" onclick="searchAddress()">주소 검색</button>
 				</div>
 				<span class="input-hint">도로명 또는 지번 주소를 입력해주세요.</span>
@@ -223,12 +228,20 @@ function fn_submit() {
 	
   	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
+	
 	function searchAddress() {
 	    new daum.Postcode({
 	        oncomplete: function(data) {
 	            // 우편번호와 도로명 주소 설정
-	            document.getElementById("zipCode").value = data.zonecode;
-	            document.getElementById("userAddress").value = data.roadAddress;
+	            const zipCode =  document.getElementById("zipCode")
+	            const userAddress = document.getElementById("userAddress")
+	            
+	            zipCode.value = data.zonecode;
+	            userAddress.value = data.roadAddress;
+	            
+	            
+	            zipCode.readOnly = true;
+	            userAddress.readOnly = true;
 	        }
 	    }).open();
 	}

@@ -15,6 +15,5 @@ public interface AdminService {
 	public void NoticeModify(HashMap<String, String> param);
 
 	public void NoticeDelete(HashMap<String, String> param);
-	
-	
+
 }
